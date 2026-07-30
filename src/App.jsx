@@ -2,14 +2,20 @@ import { useState, useEffect } from 'react';
 import { festivalData } from './data';
 
 const FESTIVAL_START_HOUR = 13.5;
-const FESTIVAL_END_HOUR = 25.5; 
-const HOUR_HEIGHT = 160;
+const FESTIVAL_END_HOUR = 25.5;
 
 function App() {
   const [activeDay, setActiveDay] = useState(festivalData[0].day);
   const [simulatedTime, setSimulatedTime] = useState("20:00");
   const isDev = import.meta.env.DEV;
   const [isSimulating, setIsSimulating] = useState(isDev);
+  const [hourHeight, setHourHeight] = useState(window.innerWidth < 768 ? 100 : 160);
+
+  useEffect(() => {
+    const handleResize = () => setHourHeight(window.innerWidth < 768 ? 100 : 160);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isSimulating) return;
@@ -65,11 +71,11 @@ function App() {
     if (h < 10) hourAdjusted += 24; 
     
     const totalMinutes = (hourAdjusted - FESTIVAL_START_HOUR) * 60 + m;
-    return (totalMinutes / 60) * HOUR_HEIGHT;
+    return (totalMinutes / 60) * hourHeight;
   };
 
   const calculateHeight = (start, end) => {
-    if (!start || !end) return HOUR_HEIGHT;
+    if (!start || !end) return hourHeight;
     const startPx = timeToPixels(start);
     const endPx = timeToPixels(end);
     return endPx - startPx;
@@ -90,7 +96,7 @@ function App() {
       <div 
         key={h} 
         className="time-marker" 
-        style={{ top: `${(h - FESTIVAL_START_HOUR) * HOUR_HEIGHT}px` }}
+        style={{ top: `${(h - FESTIVAL_START_HOUR) * hourHeight}px` }}
       >
         <span>{displayHour.toString().padStart(2, '0')}:00</span>
       </div>
@@ -156,12 +162,12 @@ function App() {
             ))}
           </div>
 
-          <div className="schedule-grid" style={{ height: `${(FESTIVAL_END_HOUR - FESTIVAL_START_HOUR) * HOUR_HEIGHT}px` }}>
+          <div className="schedule-grid" style={{ height: `${(FESTIVAL_END_HOUR - FESTIVAL_START_HOUR) * hourHeight}px` }}>
             <div className="time-axis">
               {timeMarkers}
             </div>
 
-            {currentTimePosition >= 0 && currentTimePosition <= (FESTIVAL_END_HOUR - FESTIVAL_START_HOUR) * HOUR_HEIGHT && (
+            {currentTimePosition >= 0 && currentTimePosition <= (FESTIVAL_END_HOUR - FESTIVAL_START_HOUR) * hourHeight && (
               <div 
                 className="current-time-line"
                 style={{ top: `${currentTimePosition}px` }}

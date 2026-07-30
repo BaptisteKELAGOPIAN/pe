@@ -369,8 +369,18 @@ header {
 }
 
 @media (max-width: 768px) {
-  .app-container { padding: 1rem; }
+  .app-container { padding: 0.5rem; }
+  .schedule-scroll-container { min-width: 100%; }
   .festival-title { font-size: 2.2rem; }
   .time-simulator { flex-direction: column; text-align: center; }
   .time-controls { justify-content: center; }
+  .artist-slot { padding: 0.4rem; border-radius: 8px; }
+  .artist-slot-header { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+  .artist-slot-name { font-size: 0.85rem; word-break: break-word; }
+  .artist-slot-time { font-size: 0.7rem; margin-bottom: 0.1rem; }
+  .artist-slot-style { font-size: 0.7rem; margin-top: 0.1rem; line-height: 1.1; }
+  .interest-score { font-size: 0.75rem; padding: 0.1rem 0.3rem; }
+  .stage-column-header h2 { font-size: 1.2rem; }
+  .time-axis { width: 45px; }
+  .time-axis-placeholder { width: 45px; }
 }
