@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@400;600;900&family=VT323&display=swap');
+
+:root {
+  --neon-magenta: #ff00ff;
+  --neon-pink: #ff1493;
+  --neon-blue: #00e5ff;
+  --neon-cyan: #00ffcc;
+  --neon-purple: #9d00ff;
+  
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 1);
+  --glass-hover: rgba(255, 255, 255, 0.9);
+  
+  --text-main: #111111;
+  --text-muted: #555555;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  /* Fond clair inspiré de l'affiche, très lumineux, reprenant les teintes de l'affiche (Cyan/Magenta) mais "sans le flashy" (plus pastel/doux) */
+  background: linear-gradient(to top right, #e0f7fa 0%, #f3e5f5 50%, #fce4ec 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.festival-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  transform: rotate(-2deg); /* Slight angle for festival vibe */
+}
+
+.logo-top {
+  font-family: 'VT323', monospace;
+  font-size: 6.5rem;
+  line-height: 0.75;
+  color: #000;
+  background: #fff;
+  border: 4px solid #000;
+  padding: 0 1.5rem;
+  letter-spacing: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+}
+
+.logo-bottom {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  background: #000;
+  padding: 0.3rem 1.5rem;
+  margin-top: -10px;
+  letter-spacing: 4px;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--neon-pink);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+/* Time Simulator */
+.time-simulator {
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid var(--neon-blue);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+}
+
+.time-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.time-input {
+  background: #fff;
+  border: 2px solid var(--neon-blue);
+  color: #111;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  font-family: 'Outfit';
+}
+
+.current-time-display {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.current-time-display span {
+  color: var(--neon-pink);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  font-family: 'VT323', monospace;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  font-size: 2.2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: none;
+  line-height: 1;
+}
+
+.tab-btn.active {
+  background: transparent;
+  color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue);
+}
+
+/* 2D SCHEDULE GRID */
+.schedule-wrapper {
+  overflow-x: auto;
+  padding-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+.schedule-scroll-container {
+  min-width: 900px;
+  padding-bottom: 20px;
+}
+
+.grid-headers {
+  display: flex;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: linear-gradient(to bottom, #e0f7fa, transparent);
+  padding-top: 10px;
+}
+
+.time-axis-placeholder {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.stage-column-header {
+  flex: 1;
+  text-align: center;
+  margin-left: 10px;
+}
+
+/* Style texte pur avec un bel effet Glow */
+.stage-column-header h2 {
+  font-family: 'VT323', monospace;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #111;
+  background: transparent;
+  padding: 0.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  box-shadow: none;
+  letter-spacing: -1px;
+  text-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+}
+
+.stage-column-header h2::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: #111;
+  margin-left: 10px;
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+}
+
+.schedule-grid {
+  display: flex;
+  position: relative;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Axe des heures */
+.time-axis {
+  width: 60px;
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.85);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  border-radius: 20px 0 0 20px;
+  backdrop-filter: blur(10px);
+}
+
+.time-marker {
+  position: absolute;
+  width: 100%;
+  text-align: right;
+  color: var(--text-muted);
+  font-weight: 900;
+  border-top: 1px dashed rgba(0,0,0,0.1);
+}
+.time-marker span {
+  position: relative;
+  top: 2px;
+  right: 5px;
+  font-size: 0.9rem;
+}
+
+/* Ligne "En ce moment" */
+.current-time-line {
+  position: absolute;
+  left: 60px;
+  right: 0;
+  border-top: 3px solid var(--neon-pink);
+  z-index: 25;
+  pointer-events: none;
+}
+
+.current-time-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--neon-pink);
+  border-radius: 50%;
+  position: absolute;
+  left: -8px;
+  top: -9px;
+  box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+}
+
+/* Colonnes des scènes */
+.stage-column {
+  flex: 1;
+  position: relative;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  margin-left: 10px;
+}
+
+.stage-artists-container {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+}
+
+/* Cartes des artistes (absolues) */
+.artist-slot {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 12px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 5;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.artist-slot:hover {
+  z-index: 15;
+  transform: scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+}
+
+.artist-slot-time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.artist-slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+/* Comme sur l'affiche : Police extra-grasse sans-serif majuscules */
+.artist-slot-name {
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  word-break: break-word;
+  color: #111;
+}
+
+.artist-slot-style {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 0.3rem;
+  flex-grow: 1;
+}
+
+.interest-score {
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  display: inline-block;
+  white-space: nowrap;
+  border: 2px solid;
+  color: #111;
+  background: #fff !important;
+}
+
+/* IS PLAYING NOW STATE */
+.artist-slot.is-playing {
+  z-index: 8;
+  border-width: 3px !important;
+  border-color: var(--neon-pink) !important;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.2) !important;
+}
+
+@media (max-width: 768px) {
+  .app-container { padding: 1rem; }
+  .festival-title { font-size: 2.2rem; }
+  .time-simulator { flex-direction: column; text-align: center; }
+  .time-controls { justify-content: center; }
+}
