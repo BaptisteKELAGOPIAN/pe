@@ -8,7 +8,8 @@ const HOUR_HEIGHT = 160;
 function App() {
   const [activeDay, setActiveDay] = useState(festivalData[0].day);
   const [simulatedTime, setSimulatedTime] = useState("20:00");
-  const [isSimulating, setIsSimulating] = useState(true);
+  const isDev = import.meta.env.DEV;
+  const [isSimulating, setIsSimulating] = useState(isDev);
 
   useEffect(() => {
     if (isSimulating) return;
@@ -108,28 +109,30 @@ function App() {
         <div className="subtitle">Mon Guide Perso 2026</div>
       </header>
 
-      <div className="time-simulator">
-        <div className="time-controls">
-          <label>
+      {isDev && (
+        <div className="time-simulator">
+          <div className="time-controls">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={isSimulating} 
+                onChange={(e) => setIsSimulating(e.target.checked)}
+              />
+              Simuler l'heure (Test)
+            </label>
             <input 
-              type="checkbox" 
-              checked={isSimulating} 
-              onChange={(e) => setIsSimulating(e.target.checked)}
+              type="time" 
+              value={simulatedTime}
+              onChange={(e) => setSimulatedTime(e.target.value)}
+              disabled={!isSimulating}
+              className="time-input"
             />
-            Simuler l'heure (Test)
-          </label>
-          <input 
-            type="time" 
-            value={simulatedTime}
-            onChange={(e) => setSimulatedTime(e.target.value)}
-            disabled={!isSimulating}
-            className="time-input"
-          />
+          </div>
+          <div className="current-time-display">
+            Heure actuelle : <span>{simulatedTime}</span>
+          </div>
         </div>
-        <div className="current-time-display">
-          Heure actuelle : <span>{simulatedTime}</span>
-        </div>
-      </div>
+      )}
 
       <div className="tabs">
         {festivalData.map(dayData => (
