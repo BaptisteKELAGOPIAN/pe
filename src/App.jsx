@@ -106,7 +106,6 @@ function App() {
           <div className="logo-top">LES PLAGES</div>
           <div className="logo-bottom">ELECTRONIQUES - CANNES</div>
         </div>
-        <div className="subtitle">Mon Guide Perso 2026</div>
       </header>
 
       {isDev && (
